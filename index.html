@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        body{
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+            background:#f4f6f9;
+        }
+
+        /* HEADER */
+        header .container-fluid{
+            background: linear-gradient(135deg,#0d6efd,#003c8f);
+        }
+
+        /* JUDUL PUTIH */
+        h1{
+            font-family: 'Cinzel', serif;
+            color: #ffffff !important;
+            letter-spacing: 2px;
+        }
+
+        /* NAVBAR */
+        .navbar{
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        /* SLIDER */
+        .carousel-item img{
+            height: 420px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        section{
+            padding: 70px 0;
+        }
+
+        /* CARD KARAKTER & POKEMON */
+        .card{
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            background:white;
+        }
+
+        .card:hover{
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        /* INI YANG BIKIN FOTO FULL BADAN KELIHATAN */
+        .card img{
+            height: 260px;
+            object-fit: contain;    
+            background: #eef2f7;     
+            padding: 10px;
+        }
+
+        /* JUDUL SECTION */
+        h2{
+            font-weight:600;
+            margin-bottom:30px;
+        }
+
+        footer{
+            background:#003c8f;
+            color:white;
+            padding:20px;
+            margin-top:40px;
+        }
+    </style>
+</head>
+<body>
+
+<header> 
+<div class="container-fluid p-2 text-white">
+    <div class="row align-items-center">
+        <div class="col-2">
+            <img src="js/pokee.png" class="img-fluid" style="max-height: 80px;">
+        </div>
+        <div class="col-8">
+            <h1 class="fw-bold text-center">POKEMON HORIZONS</h1>
+        </div>
+    </div>
+</div>
+</header>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-semibold" href="#home">BERANDA</a>
+
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#karakter">Karakter</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#pokemon">Pokémon</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HOME / BERANDA ================= -->
+<section id="home" class="container">
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2500">
+        <div class="carousel-inner">
+
+            <div class="carousel-item active">
+                <img src="js/hori 1.png" class="d-block w-100">
+            </div>
+
+            <div class="carousel-item">
+                <img src="js/hori2.png" class="d-block w-100">
+            </div>
+
+            <div class="carousel-item">
+                <img src="js/hori3.jpg" class="d-block w-100">
+            </div>
+
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</section>
+
+<!-- ================= KARAKTER ================= -->
+<section id="karakter" class="bg-light">
+<div class="container">
+    <h2 class="text-center mb-4">Karakter Utama</h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="js/image bahan/liko.png" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">Liko</h5>
+                    <p>Tokoh utama yang memulai petualangan misterius bersama Pokémon miliknya.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <img src="js/image bahan/roi.png" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">Roy</h5>
+                    <p>Anak petualang penuh semangat yang ingin menjelajah dunia Pokémon.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <img src="js/image bahan/dot.png" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">Dot</h5>
+                    <p>jenius dan pendiam di Pokémon Horizons yang ahli teknologi dan membantu tim lewat analisis serta informasi.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ================= POKEMON ================= -->
+<section id="pokemon">
+<div class="container">
+    <h2 class="text-center mb-4">Pokémon Partner</h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="js/image bahan/spriga.png" class="card-img-top">
+                <div class="card-body">
+                    <h5>Floragato</h5>
+                    <p>Pokémon tipe rumput yang lincah dan penuh rasa ingin tahu.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <img src="js/image bahan/fuecoco.png" class="card-img-top">
+                <div class="card-body">
+                    <h5>Crocalor</h5>
+                    <p>Pokémon api yang santai tapi sangat kuat saat bertarung.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <img src="js/image bahan/quax.png" class="card-img-top">
+                <div class="card-body">
+                    <h5>Quaxwell</h5>
+                    <p>Partner setia dengan kekuatan Air yang rapi dan tenang.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<footer>
+    <p class="text-center mt-5 text-muted">©2026KaryaRegitaa</p>
+</footer>
+   
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
