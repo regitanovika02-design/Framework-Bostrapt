@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StrapChallenge 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --bs-primary: #3b82f6; }
+        body { 
+            background: linear-gradient(rgba(15,23,42,.85), rgba(15,23,42,.85)), url('code.jpg') center/cover fixed; 
+            color: #f8fafc; min-height: 100vh;
+        }
+        #main-content, #game-box, #res-box { display: none; }
+        .opt-btn { display: block; width: 100%; text-align: left; margin-bottom: 8px; padding: 12px; background: #1e293b; border: 1px solid #334155; color: #fff; border-radius: 8px; }
+        .opt-btn:hover { background: var(--bs-primary); }
+        .rekap-item { background: rgba(30,41,59,.8); padding: 10px; border-radius: 8px; margin-bottom: 8px; border-left: 5px solid; }
+        .salah { border-left-color: #ef4444; } .benar { border-left-color: #22c55e; }
+        .nav-link.active-rank { color: var(--bs-primary) !important; font-weight: bold; text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <section id="login-sec" class="container vh-100 d-flex align-items-center justify-content-center">
+        <div class="col-md-5 bg-dark p-4 rounded-4 border border-primary shadow">
+            <h3 class="text-center text-primary fw-bold mb-4">BOOTSTRAP.QUIZ LOGIN</h3>
+            <form onsubmit="goHome(event)">
+                <input type="text" id="p-name" class="form-control mb-3 bg-secondary border-0 text-white" placeholder="Nickname" required>
+                <button type="submit" class="btn btn-primary w-100 fw-bold">MASUK</button>
+            </form>
+        </div>
+    </section>
+
+    <div id="main-content">
+        <nav class="navbar navbar-dark bg-dark border-bottom border-secondary sticky-top">
+            <div class="container">
+                <a class="navbar-brand fw-bold text-primary">STRAP.QUIZ</a>
+                <a href="#rank-sec" id="rank-link" class="nav-link text-white small" onclick="highlightRank()">🏆 Ranking</a>
+            </div>
+        </nav>
+
+        <div class="container py-5">
+            <div id="home-box" class="text-center">
+                <h1 class="fw-bold mb-4">Halo, <span id="user-display" class="text-primary"></span>!</h1>
+                <div class="card bg-dark border-primary mx-auto mb-5" style="max-width: 500px;">
+                    <div class="card-body p-4 text-start">
+                        <h5 class="text-warning text-center fw-bold">📜 PERATURAN</h5>
+                        <ol class="small mt-3 text-white">
+                            <li>10 Soal IT & Bootstrap.</li>
+                            <li>Skor Maksimal 100 (10/soal).</li>
+                            <li>Ranking otomatis muncul di bawah setelah quiz.</li>
+                            <li>Dilarang melakukan refresh halaman saat bermain.</li> 
+                        </ol>
+                        <button onclick="start()" class="btn btn-primary w-100 fw-bold mt-2">MULAI GAME</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-box" class="p-4 bg-dark rounded-4 border border-primary shadow-lg">
+                <div class="d-flex justify-content-between mb-3">
+                    <span id="q-num" class="badge bg-primary">Soal 1</span>
+                    <span id="s-live" class="fw-bold text-success">Skor: 0</span>
+                </div>
+                <h4 id="q-txt" class="mb-4">Loading...</h4>
+                <div id="opt-list"></div>
+            </div>
+
+            <div id="res-box" class="mt-4">
+                <div class="text-center mb-4">
+                    <h2 class="text-warning fw-bold">SKOR AKHIR: <span id="f-score">0</span></h2>
+                    <button class="btn btn-sm btn-outline-light" onclick="location.reload()">Reset / Ganti Nama</button>
+                </div>
+                <div id="rekap" class="row g-2 mb-5"></div>
+            </div>
+
+            <section id="rank-sec" class="mt-5">
+                <h3 class="text-center text-primary fw-bold mb-4">GLOBAL RANKING</h3>
+                <div class="table-responsive bg-dark rounded border border-secondary p-2">
+                    <table class="table table-dark table-hover mb-0 text-center">
+                        <thead><tr><th>#</th><th>Player</th><th>Skor</th></tr></thead>
+                        <tbody id="rank-body"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        let nick = "", cur = 0, pts = 0, hist = [];
+        let rks = JSON.parse(localStorage.getItem('strapRank')) || [{name:"Regita",score:100}];
+        
+        const soal = [
+            { q: "Tag HTML apa yang digunakan untuk membuat judul paling besar?", a: "h1", o: ["h1", "h6", "p", "div"] },
+            { q: "Apa kepanjangan dari HTML?", a: "Hyper Text Markup Language", o: ["Hyper Text", "Hyper Text Markup Language", "Home Tool", "Hyperlink"] },
+            { q: "Simbol apa yang digunakan untuk ID di CSS?", a: "#", o: [".", "#", "*", "@"] },
+            { q: "Tag HTML apa yang digunakan untuk membuat baris baru?", a: "br", o: ["br", "hr", "p", "lb"] },
+            { q: "Tag HTML apa yang digunakan untuk membuat link?", a: "a", o: ["link", "a", "href", "url"] },
+            { q: "Properti CSS apa yang digunakan untuk mengatur warna teks?", a: "color", o: ["text", "color", "font", "paint"] },
+            { q: "Dalam sistem Grid Bootstrap terdapat berapa jumlah kolom?", a: "12", o: ["10", "12", "8", "6"] },
+            { q: "Kelas Bootstrap untuk membuat kolom dengan lebar 6 pada layar medium adalah?", a: "col-md-6", o: ["col-6", "col-md-6", "col-lg-6", "col-sm-6"] },
+            { q: "Komponen Bootstrap yang digunakan untuk membuat menu navigasi adalah?", a: "navbar", o: ["navbar", "menu-bar", "nav-menu", "navigation"] },
+            { q: "Kelas Bootstrap untuk membuat container dengan lebar penuh adalah?", a: "container-fluid", o: ["container", "container-max", "container-fluid", "container-wide"] }
+        ];
+
+        window.onload = upRank;
+
+        function highlightRank() {
+            document.getElementById('rank-link').classList.toggle('active-rank');
+        }
+
+        function goHome(e) { 
+            e.preventDefault(); 
+            nick = document.getElementById('p-name').value; 
+            document.getElementById('user-display').innerText = nick; 
+            document.getElementById('login-sec').classList.add('d-none'); 
+            document.getElementById('main-content').style.display = 'block'; 
+        }
+
+        function start() {
+            document.getElementById('home-box').style.display = 'none'; 
+            document.getElementById('rank-sec').style.display = 'none'; 
+            document.getElementById('game-box').style.display = 'block'; 
+            show();
+        }
+
+        function show() {
+            let s = soal[cur]; 
+            document.getElementById('q-num').innerText = `Soal ${cur+1}/10`; 
+            document.getElementById('q-txt').innerText = s.q;
+            let l = document.getElementById('opt-list'); 
+            l.innerHTML = "";
+            s.o.forEach(o => { 
+                let b = document.createElement('button'); 
+                b.className="opt-btn"; 
+                b.innerText=o; 
+                b.onclick=()=>cek(o); 
+                l.appendChild(b); 
+            });
+        }
+
+        function cek(p) {
+            let b = soal[cur].a; 
+            hist.push({q:soal[cur].q, u:p, c:b}); 
+            if(p===b) pts+=10;
+            document.getElementById('s-live').innerText = "Skor: "+pts; 
+            cur++;
+            if(cur < soal.length) show(); else done();
+        }
+
+        function done() {
+            document.getElementById('game-box').style.display='none'; 
+            document.getElementById('res-box').style.display='block'; 
+            document.getElementById('rank-sec').style.display='block'; 
+            document.getElementById('f-score').innerText = pts;
+            rks.push({name:nick, score:pts}); 
+            rks.sort((a,b)=>b.score-a.score); 
+            localStorage.setItem('strapRank', JSON.stringify(rks));
+            upRank(); 
+            let r = document.getElementById('rekap');
+            r.innerHTML = ""; 
+            hist.forEach(h => { 
+                r.innerHTML += `<div class="col-6"><div class="rekap-item ${h.u===h.c?'benar':'salah'}"><small>${h.q}</small><br><small>Jawab: ${h.u}</small></div></div>`; 
+            });
+        }
+
+        function upRank() {
+            let t = document.getElementById('rank-body'); 
+            t.innerHTML = "";
+            rks.slice(0,5).forEach((d,i) => { 
+                t.innerHTML += `<tr><td>${i+1}</td><td class="${d.name===nick?'text-primary fw-bold':''}">${d.name}</td><td>${d.score}</td></tr>`; 
+            });
+        }
+    </script>
+</body>
+</html>
